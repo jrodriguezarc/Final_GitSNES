@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="1200px"
+    android:layout_height="280px"
+    android:layout_marginTop="10dp"
+
+    >
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="42sp"
+        android:textColor="#000000"
+        android:text="asdasd"
+        android:layout_marginLeft="20dp"/>
+
+    <TextView
+        android:id="@+id/category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:textColor="#000000"
+        android:textSize="32sp"
+        android:text="asdasd"
+        android:layout_marginLeft="20dp"/>
+
+    <TextView
+        android:id="@+id/decription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/category"
+        android:textColor="#000000"
+        android:textSize="32sp"
+        android:text="asdas"
+        android:layout_marginLeft="20dp"/>
+
+        <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:id="@+id/img_game"
+        android:src="@drawable/liker"
+        android:layout_marginLeft="450dp"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:id="@+id/txt_likes"
+        android:text="0"
+        android:textSize="20dp"
+        android:layout_marginLeft="505dp"
+        android:layout_marginTop="50dp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/img_invaders"
+        android:background="@drawable/delimiterwhite"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:adjustViewBounds="true"/>
+
+</RelativeLayout>

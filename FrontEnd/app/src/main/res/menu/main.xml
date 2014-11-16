@@ -1,0 +1,50 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+tools:context=".MainActivity" >
+<item android:id="@+id/add_game"
+    android:title="@string/add_game"
+    android:orderInCategory="100"
+    android:showAsAction="never"
+    android:onClick="add_games"
+    />
+
+    <item android:id="@+id/search_game"
+    android:title="@string/search_game"
+    android:orderInCategory="100"
+    android:showAsAction="never"
+    android:onClick="advanced_query"/>
+
+    <item android:id="@+id/game_list"
+        android:title="@string/game_list"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:onClick="goList"/>
+
+
+    <item android:id="@+id/favorite_games"
+        android:title="@string/favorites"
+        
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:onClick="getFavorites"/>
+
+    <item android:id="@+id/recomended_games"
+        android:title="@string/recomended"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:onClick="getRecomended"/>
+
+
+    <item android:id="@+id/admin_menu"
+        android:title="@string/adminview"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:onClick="adminMenu"/>
+
+    <item android:id="@+id/search"
+        android:title="@string/search_title"
+        android:icon="@android:drawable/ic_menu_search"
+        android:showAsAction="collapseActionView|ifRoom"
+        android:actionViewClass="android.widget.SearchView" />
+
+</menu>

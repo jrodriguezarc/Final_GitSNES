@@ -1,0 +1,31 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion '19.1.0'
+
+    defaultConfig {
+        applicationId "itcr.gitsnes"
+        minSdkVersion 19
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile files('C:/Users/JuanPC/AndroidStudioProjects/GitSNES/SDK-AWS/lib/release/extras/aws-android-sdk-2.1.4-cognito.jar')
+    compile files('C:/Users/JuanPC/AndroidStudioProjects/GitSNES/SDK-AWS/lib/release/aws-android-sdk-2.1.4-core.jar')
+    compile files('C:/Users/JuanPC/AndroidStudioProjects/GitSNES/SDK-AWS/lib/release/aws-android-sdk-2.1.4-s3.jar')
+    compile files('C:/Users/JuanPC/AndroidStudioProjects/GitSNES/SDK-AWS/lib/release/aws-android-sdk-2.1.4-ec2.jar')
+    compile files('libs/YouTubeAndroidPlayerApi.jar')
+    compile project(':facebook1')
+    compile files('libs/VirusTotalAPI.jar')
+}
