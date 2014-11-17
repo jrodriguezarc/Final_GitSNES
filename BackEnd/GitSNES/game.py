@@ -25,7 +25,14 @@ from google.appengine.api import users
 import hashlib
 import sys
 
+#_______________________________________________________________________________________________________________________________________________
+
 def decryptMD5(n):    
+    """ Validates the token    
+        
+        Parameters:
+        :param n: token to validate
+    """
     for x in range(1,500):
         if( hashlib.md5(hashlib.md5(str((x*(x+1)*(4*x-1)/6))).hexdigest()).hexdigest() == n):
             query = hashDB.all()            
@@ -54,7 +61,21 @@ def decryptMD5(n):
         self.response.write(json.encode(result))"""
 
 #_______________________________________________________________________________________________________________________________________________
+
 class Users(webapp2.RequestHandler):
+
+    """ Gets all users in the DB
+
+        Method: GET
+        Path: /users/{hashing}
+        
+        Request Parameters:
+        pretty          [true|false]        
+        
+        Parameters:
+        :param hashing: the key identifies the token for having access to the API
+    """
+
     def get(self, hashing):
         if(decryptMD5(hashing)):
             self.response.content_type = 'application/json' 
@@ -66,8 +87,25 @@ class Users(webapp2.RequestHandler):
                                 'email': user.email,})
             self.response.write(json.encode(result))
 
+#_______________________________________________________________________________________________________________________________________________
+
 #create user
 class CreateUser(webapp2.RequestHandler):
+
+    """ Creates a user if it does not exist
+
+        Method: POST
+        Path: /createuser/{user_nameP}/{user_emailP}/{hashing}
+        
+        Request Parameters:
+        pretty          [true|false]        
+        
+        Parameters:
+        :param user_nameP: the key that identifies the users's name
+        :param user_emailP: the key that identifies the users's email
+        :param hashing: the key identifies the token for having access to the API
+    """
+
     def post(self, user_nameP, user_emailP , hashing):
         if(decryptMD5(hashing)):
             users = UserDB.all()
@@ -79,7 +117,22 @@ class CreateUser(webapp2.RequestHandler):
             else:
                  self.response.write("Exist")
 
+#_______________________________________________________________________________________________________________________________________________
+
 class GetUserToken(webapp2.RequestHandler):
+
+    """ Gets the token for having access 
+
+        Method: GET
+        Path: /token/{user_emailP}
+        
+        Request Parameters:
+        pretty          [true|false]        
+        
+        Parameters:
+        :param user_emailP: the key that identifies the users's email
+    """
+
     def get(self, user_emailP):
         users = UserDB.all()
         users.filter("email =", user_emailP)
@@ -88,9 +141,21 @@ class GetUserToken(webapp2.RequestHandler):
             result.append({'id': str(user.key())})
         self.response.write(json.encode(result))
 
-
 #_______________________________________________________________________________________________________________________________________________
+
 class GamesRecomendation(webapp2.RequestHandler):
+
+    """ Recomends a games according to the category of the favorite games of a specific user
+
+        Method: GET
+        Path: /gamesrecomendation/{user_idP}
+        
+        Request Parameters:
+        pretty          [true|false]        
+        
+        Parameters:
+        :param user_idP: the key that identifies the user
+    """
     def get(self, user_idP):
         self.response.content_type = 'application/json' 
         
@@ -121,8 +186,20 @@ class GamesRecomendation(webapp2.RequestHandler):
                                 'uploaddate': str(game.uploaddate)},)
         self.response.write(json.encode(finalresult))
 
+#_______________________________________________________________________________________________________________________________________________
 
 class Recomendations(webapp2.RequestHandler):
+    """ Gets the first ten games with the highest amount of likes for recommending to the users
+        Method: GET
+        Path: /moreliked/{hashing}
+        
+        Request Parameters:
+        pretty          [true|false]        
+        
+        Parameters:
+        :param hashing: the key identifies the token for having access to the API
+    """   
+
     def get(self,hashing):
         if(decryptMD5(hashing)):
             self.response.content_type = 'application/json' 
@@ -142,8 +219,20 @@ class Recomendations(webapp2.RequestHandler):
                                 'likes': game.likes,})
             self.response.write(json.encode(result))
 
+#_______________________________________________________________________________________________________________________________________________
 
 class LikeRecomend(webapp2.RequestHandler):
+
+    """ Gets games with the highest amount of likes for recommending to the users
+        Method: GET
+        Path: /recomendedliker/{hashing}
+        
+        Request Parameters:
+        pretty          [true|false]        
+        
+        Parameters:
+        :param hashing: the key identifies the token for having access to the API
+    """    
     def get(self,hashing):
         if(decryptMD5(hashing)):
             self.response.content_type = 'application/json' 
@@ -166,8 +255,21 @@ class LikeRecomend(webapp2.RequestHandler):
 
 
 #_______________________________________________________________________________________________________________________________________________
-#Add favorite game if it does not exist
+
 class GameFavorite(webapp2.RequestHandler):
+
+    """ Adds a favorite game if it does not exist
+        Method: POST
+        Path: /gamesfavoriteadd/{game_idP}/{user_idP}
+        
+        Request Parameters:
+        pretty          [true|false]        
+        
+        Parameters:
+        :param game_idP: the key that identifies the game
+        :param user_idP: the key identifies the user
+    """
+
     def post(self, game_idP, user_idP):
         countfavorite = FavoriteDB.all()
         key=countfavorite.filter("game_id =", game_idP).filter("user_id =",user_idP) 
@@ -178,9 +280,21 @@ class GameFavorite(webapp2.RequestHandler):
         else:
              self.response.write("Exist")
 
+#_______________________________________________________________________________________________________________________________________________
 
-#Get all favorite games of a specific game
 class GamesFavorite(webapp2.RequestHandler):
+
+    """ Gets all favorite games of a specific game
+
+        Method: GET
+        Path: /gamesfavorite/{user_id}
+        
+        Request Parameters:
+        pretty          [true|false]        
+        
+        Parameters:
+        :param user_id: the key that identifies the user 
+    """
     def get(self, user_idP):
         self.response.content_type = 'application/json' 
         favoritegames = FavoriteDB.all()
@@ -207,7 +321,20 @@ class GamesFavorite(webapp2.RequestHandler):
 
 
 #_______________________________________________________________________________________________________________________________________________
+
 class Games(webapp2.RequestHandler):
+
+    """ Gets all the games from the DB
+
+        Method: GET
+        Path: /games/{hashing}
+        
+        Request Parameters:
+        pretty          [true|false]        
+        
+        Parameters:
+        :param hashing: the key identifies the token for having access to the API
+    """
 
     def get(self,hashing):
         if(decryptMD5(hashing)):
@@ -232,6 +359,19 @@ class Games(webapp2.RequestHandler):
 
 #_______________________________________________________________________________________________________________________________________________
 class GamesSearch(webapp2.RequestHandler):
+    
+    """ Searches a game by the key 
+
+        Method: GET
+        Path: /GamesSearch/{application_key}
+        
+        Request Parameters:
+        pretty          [true|false]        
+        
+        Parameters:
+        :param application_key: the key that identifies the game
+    """
+
     def get(self,game_key):
         self.response.content_type = 'application/json' 
         game = GameDB.get(game_key)
@@ -247,25 +387,20 @@ class GamesSearch(webapp2.RequestHandler):
                             'likes': game.likes,}
         self.response.write(json.encode(obj))
 
-
-#  ---------- DELETE API  ----------
-
 #_______________________________________________________________________________________________________________________________________________
 class DeleteGame(webapp2.RequestHandler):
     
-    """ Deletes a game
+    """ Deletes a specific game
 
         Method: DELETE
-        Path: /deletegame/{application_key}
-
-        URI Parameters:
-        application_key string              the key that identifies the game
+        Path: /deletegame/{application_key}/{hashing}
         
         Request Parameters:
         pretty          [true|false]        
         
         Parameters:
         :param application_key: the key that identifies the game
+        :param hashing: the key identifies the token for having access to the API
     """
 
     def delete(self, game_key,hashing):
@@ -275,23 +410,21 @@ class DeleteGame(webapp2.RequestHandler):
             db.delete(game)
 
 
-#  ----------  PUT API  ----------
-
-
-
+#_______________________________________________________________________________________________________________________________________________
 
 class LikeGame(webapp2.RequestHandler):
 
-    """ Like a game
+    """ Gives a like to a specific game
 
         Method: PUT
-        Path: /likegame/{application_key}
+        Path: /likegame/{application_key}/{hashing}
 
         Request Parameters:
         pretty          [true|false]          
 
         Parameters:
         :param application_key: the key that identifies the game
+        :param hashing: the key identifies the token for having access to the API
     """
 
     def put(self, game_key,hashing):
@@ -301,19 +434,21 @@ class LikeGame(webapp2.RequestHandler):
             game.likes = str(int(game.likes) + 1)
             db.put(game)
 
+#_______________________________________________________________________________________________________________________________________________
 
 class ApproveGame(webapp2.RequestHandler):
 
-    """ ApproveGame a game state
+    """ Changes the state of the game to approved
 
         Method: PUT
-        Path: /changestate/{application_key}
+        Path: /changestate/{application_key}/{hashing}
 
         Request Parameters:
         pretty          [true|false]          
 
         Parameters:
         :param application_key: the key that identifies the game
+        :param hashing: the key identifies the token for having access to the API
     """
 
     def put(self, game_key,hashing):
@@ -322,29 +457,23 @@ class ApproveGame(webapp2.RequestHandler):
             game = GameDB.get(game_key)
             game.state = str(1)
             db.put(game)
-
-#  ----------  POST API  ----------
-
 #_______________________________________________________________________________________________________________________________________________
 
 class Game(webapp2.RequestHandler):
 
-    """ Upload a game metadata
+    """ Uploads a game metadata
 
         Method: POST
-        Path: /deletegame/game/{uploader}/{name}/{category}/{description}/{imgURL}/{fileURL}/{initial_likes}
-
-        Request Parameters:
-        pretty          [true|false]    
-
+        Path: /game/{uploader}/{game_name}/{game_description}/{game_category}/{_image}/{_file}/{hashing}
+ 
         Parameters:
         :param uploader: the key that identifies the game
-        :param name: the name that identifies the game
-        :param category: the category that identifies the game
-        :param description: the description that identifies the game
-        :param imgURL: the bucket-imageKey identifies the game image
-        :param fileURL: the  bucket-fileKey that identifies the game file
-        :param initial_likes: the key that identifies the initial likes of the game
+        :param game_name: the name that identifies the game
+        :param game_category: the category that identifies the game
+        :param game_description: the description that identifies the game
+        :param _image: the bucket-imageKey identifies the game image
+        :param _file: the  bucket-fileKey that identifies the game file
+        :param hashing: the key identifies the token for having access to the API
     """
 
     def post(self, uploader, game_name, game_description, game_category,_image,_file, hashing):
@@ -363,7 +492,4 @@ class Game(webapp2.RequestHandler):
 
             gamepending= PendingGameDB(game_id=game_id)
             gamepending.put()
-
-
-
 #_______________________________________________________________________________________________________________________________________________
